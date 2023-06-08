@@ -35,11 +35,11 @@ const userController = {
       next(err)
     }
   },
-  login: (req, res, next) => {
+  login: async (req, res, next) => {
     try {
-      const userData = getUser(req)?.toJSON()
+      const userData = await getUser(req)?.toJSON()
       delete userData.password
-      const token = jwt.sign(userData, process.env.JWT_SECRET, { expiresIn: '30d' })
+      const token = await jwt.sign(userData, process.env.JWT_SECRET, { expiresIn: '30d' })
       if (userData.role === 'admin') throw new Error('帳號不存在!')
       return res.json({
         status: 'success',
