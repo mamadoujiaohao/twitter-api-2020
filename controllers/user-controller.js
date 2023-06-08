@@ -26,7 +26,6 @@ const userController = {
         role: 'user'
       })
       userData = userData.toJSON()
-      console.log(userData)
       return res.json({
         status: 'success',
         message: '註冊成功',
