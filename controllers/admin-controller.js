@@ -75,6 +75,26 @@ const adminController = {
     } catch (err) {
       next(err)
     }
+  },
+  getTweets: async (req, res, next) => {
+    try {
+      let tweets = await Tweet.findAll({
+        attributes: ['id', 'description', 'createdAt'],
+        include: [
+          { model: User, attributes: ['id', 'name', 'account', 'avatar'] }
+        ]
+      })
+      tweets = await Promise.all(tweets.map(async tweet => {
+        if (tweet.description.length > 50) {
+          tweet.description = tweet.description.substring(0, 50) + '...'
+          return tweet
+        }
+        return tweet
+      }))
+      return res.json({ data: { tweets } })
+    } catch (err) {
+      next(err)
+    }
   }
 }
 

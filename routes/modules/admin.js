@@ -9,6 +9,7 @@ const adminController = require('../../controllers/admin-controller')
 
 // set router
 router.get('/users', authenticated, authenticatedAdmin, adminController.getUsers)
+router.get('/tweets', authenticated, authenticatedAdmin, adminController.getTweets)
 router.post('/login', passport.authenticate('local', { session: false }), adminController.login)
 
 module.exports = router
