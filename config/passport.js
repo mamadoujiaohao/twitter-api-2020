@@ -13,7 +13,7 @@ passport.use(new LocalStrategy(
     passwordField: 'password'
   },
   // authenticate user
-  async (req, account, password, cb) => {
+  async (account, password, cb) => {
     try {
       const user = await User.findOne({ where: { account } })
       if (!user) throw new Error('帳號不存在!')

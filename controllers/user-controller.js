@@ -2,7 +2,7 @@ const { User } = require('../models')
 const { getUser } = require('../helpers/auth-helpers.js')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-// 之後加'../helpers/file-helpers'
+// const { imgurFileHandler } = require('../../helpers/file-helpers.js')
 
 const userController = {
   register: async (req, res, next) => {
@@ -15,19 +15,22 @@ const userController = {
       if (userEmail) throw new Error('email 已重複註冊！')
       if (userAccount) throw new Error('account 已重複註冊！')
       const hash = await bcrypt.hash(password, 10)
-      let newUser = await User.create({
-        name,
+      let userData = await User.create({
         account,
         email,
         password: hash,
+        name,
+        avatar: 'https://i.imgur.com/NUfWDow.png',
+        cover: 'https://i.imgur.com/ApSQQYH.png',
+        introduction: 'Hello there!',
         role: 'user'
       })
-      newUser = newUser.toJson
-      delete newUser.password
+      userData = userData.toJSON()
+      console.log(userData)
       return res.json({
         status: 'success',
         message: '註冊成功',
-        data: { newUser }
+        data: { user: userData }
       })
     } catch (err) {
       next(err)
