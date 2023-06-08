@@ -68,8 +68,9 @@ const adminController = {
       // 排序
       users = users.sort((a, b) => b.PostNum - a.PostNum)
 
-      return res.json(
-        users
+      return res.json({
+        data: { userList: users }
+      }
       )
     } catch (err) {
       next(err)
