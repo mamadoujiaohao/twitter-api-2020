@@ -1,5 +1,5 @@
 const { getUser } = require('../helpers/auth-helpers.js')
-const { User, Tweet, Reply, Like, Followship } = require('../models')
+const { User, Tweet } = require('../models')
 const jwt = require('jsonwebtoken')
 // 之後加'../helpers/file-helpers'
 
@@ -92,6 +92,23 @@ const adminController = {
         return tweet
       }))
       return res.json({ data: { tweets } })
+    } catch (err) {
+      next(err)
+    }
+  },
+  deleteTweet: async (req, res, next) => {
+    try {
+      let tweet = await Tweet.findByPk(req.params.id)
+      if (!tweet) {
+        const err = new Error("tweet didn't exist!")
+        err.status = 404
+        throw err
+      }
+      tweet = await tweet.destroy()
+      return res.json({
+        status: 'delete success',
+        data: { tweet }
+      })
     } catch (err) {
       next(err)
     }
